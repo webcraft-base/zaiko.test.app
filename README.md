@@ -20,3 +20,12 @@
   "いちご": 6,
   "生クリーム": 3
 }
+
+## データ構造（マーメイド図）
+
+```mermaid
+erDiagram
+    STOCK {
+        string name
+        int quantity
+    }
