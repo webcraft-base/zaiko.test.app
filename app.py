@@ -1,11 +1,7 @@
 from flask import Flask, render_template, request
-import json
-import os
+import sqlite3
 
 app = Flask(__name__)
-
-# JSONファイル名
-JSON_FILE = "stock.json"
 
 # 商品リスト
 items = [
@@ -20,35 +16,46 @@ items = [
     "紙コップ",
 ]
 
-# 起動時にJSONから在庫を読み込む
-if os.path.exists(JSON_FILE):
-    with open(JSON_FILE, "r", encoding="utf-8") as f:
-        stock_dict = json.load(f)
-else:
-    stock_dict = {}
+
+# DB接続
+def get_db():
+    conn = sqlite3.connect("stock.db")
+    return conn
 
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    global stock_dict
+
+    conn = get_db()
+    cursor = conn.cursor()
 
     if request.method == "POST":
         item = request.form["item"]
         quantity = int(request.form["quantity"])
 
-        # 在庫更新
-        if item in stock_dict:
-            stock_dict[item] += quantity
+        # すでにあるか確認
+        cursor.execute("SELECT quantity FROM stock WHERE name = ?", (item,))
+        result = cursor.fetchone()
+
+        if result:
+            new_quantity = result[0] + quantity
+            cursor.execute(
+                "UPDATE stock SET quantity = ? WHERE name = ?", (new_quantity, item)
+            )
         else:
-            stock_dict[item] = quantity
+            cursor.execute(
+                "INSERT INTO stock (name, quantity) VALUES (?, ?)", (item, quantity)
+            )
 
-        # JSONに書き込み
-        with open(JSON_FILE, "w", encoding="utf-8") as f:
-            json.dump(stock_dict, f, ensure_ascii=False, indent=2)
+        conn.commit()
 
-    # 在庫を少ない順にソート
-    sorted_stock = sorted(stock_dict.items(), key=lambda x: x[1])
-    return render_template("index.html", stock_dict=sorted_stock, items=items)
+    # 在庫取得（少ない順）
+    cursor.execute("SELECT name, quantity FROM stock ORDER BY quantity ASC")
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    return render_template("index.html", stock_dict=rows, items=items)
 
 
 if __name__ == "__main__":
