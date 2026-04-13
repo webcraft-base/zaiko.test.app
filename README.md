@@ -25,7 +25,9 @@
 
 ```mermaid
 erDiagram
-    STOCK {
-        string name
-        int quantity
+
+    stock {
+        INTEGER id PK
+        TEXT name
+        INTEGER quantity
     }
