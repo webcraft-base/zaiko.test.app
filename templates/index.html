@@ -15,7 +15,7 @@
         <h2>商品を選択</h2>
         <select name="item">
             {% for item in items %}
-            <option value="{{ item }}">{{ item }}</option>
+            <option value="{{ item[0] }}">{{ item[1] }}</option>
             {% endfor %}
         </select>
 
