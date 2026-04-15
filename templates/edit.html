@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>在庫編集</title>
+</head>
+
+<body>
+
+    <h1>在庫編集</h1>
+
+    <p>商品名：{{ item[0] }}</p>
+
+    <form method="POST">
+        <label>数量：</label>
+        <input type="number" name="quantity" value="{{ item[1] }}" required>
+
+        <button type="submit">更新</button>
+    </form>
+
+    <br>
+    <a href="/">戻る</a>
+
+</body>
+
+</html>

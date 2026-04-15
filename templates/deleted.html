@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>削除済み一覧</title>
+</head>
+
+<body>
+
+    <h1>削除済みの在庫</h1>
+
+    <table border="1">
+        <tr>
+            <th>商品名</th>
+            <th>数量</th>
+            <th>操作</th>
+        </tr>
+
+        {% for item in stock_dict %}
+        <tr>
+            <td>{{ item[1] }}</td>
+            <td>{{ item[2] }}</td>
+            <td>
+                <a href="/restore/{{ item[0] }}">復元</a>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <br>
+    <a href="/">← 在庫一覧に戻る</a>
+
+</body>
+
+</html>

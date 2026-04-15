@@ -3,41 +3,48 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>在庫管理アプリ</title>
+    <title>在庫一覧</title>
 </head>
 
 <body>
 
-    <h1>在庫管理アプリ（テスト）</h1>
+    <h1>在庫一覧</h1>
 
+    <table border="1">
+        <tr>
+            <th>商品名</th>
+            <th>数量</th>
+            <th>操作</th>
+        </tr>
+
+        {% for row in stock_dict %}
+        <tr>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>
+                <a href="/edit/{{ row[0] }}">編集</a>
+                <a href="/delete/{{ row[0] }}">削除</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+
+    <h2>在庫追加</h2>
     <form method="POST">
-
-        <h2>商品を選択</h2>
         <select name="item">
             {% for item in items %}
             <option value="{{ item[0] }}">{{ item[1] }}</option>
             {% endfor %}
         </select>
 
-        <h2>数量</h2>
-        <input type="number" name="quantity" value="1" min="1">
-
-        <br><br>
+        <input type="number" name="quantity" required>
 
         <button type="submit">追加</button>
-
     </form>
 
-    <hr>
-
-    <h2>在庫一覧</h2>
-    <ul>
-
-        {% for item, count in stock_dict %}
-        <li>{{ item }}：{{ count }}</li>
-        {% endfor %}
-
-    </ul>
+    <a href="/deleted">削除済み一覧を見る</a>
 
 </body>
 
