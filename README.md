@@ -51,6 +51,7 @@
   "いちご": 6,
   "生クリーム": 3
 }
+```
 
 ## 🧱 データベース設計（ER図）
 
@@ -62,12 +63,12 @@ erDiagram
         INTEGER quantity
         BOOLEAN is_deleted
     }
+```
 
 ---
 
 # 🧾 ② 使用技術
 
-```markdown
 ## 🧠 使用技術
 
 - Python（Flask）
@@ -88,3 +89,4 @@ erDiagram
 
 ```bash
 python app.py
+```
